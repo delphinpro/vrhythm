@@ -1,0 +1,17 @@
+{
+  "name": "rhythm",
+  "homepage": "https://github.com/delphinpro/vrhythm",
+  "authors": [
+    "delphinpro <delphinpro@gmail.com>"
+  ],
+  "description": "Scss-mixins for vertical rhythm (from compass)",
+  "main": "source/_rhythm.scss",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,19 @@
+// Create the gradient needed for baseline grids
+@function get-baseline-gradient($color: $rhythm-grid-baseline-color) {
+  //$gradient: linear-gradient(to top, $color 5%, rgba($color, 0) 5%);
+  $gradient: linear-gradient(to top, $color 1px, rgba($color, 0) 1px);
+  @return $gradient;
+}
+
+// Add just the baseline grid to an element's background
+//noinspection CssOptimizeSimilarProperties
+@mixin baseline-grid-background(
+  $baseline : $rhythm-grid-baseline-height,
+  $color    : $rhythm-grid-baseline-color
+) {
+  @if $rhythm-grid-show and $rhythm-grid-baseline-show {
+    background-image: get-baseline-gradient($color);
+    background-size: 100% $baseline;
+    background-position: left top;
+  }
+}
