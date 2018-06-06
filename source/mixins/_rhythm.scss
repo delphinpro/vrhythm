@@ -259,3 +259,92 @@ $_rhythm-relative-font-sizing: if($rhythm-unit == px, false, true);
 @mixin reset-baseline($font-size: $rhythm-base-font-size) {
   @include adjust-leading-to(1, $font-size);
 }
+
+@mixin __($entity, $value) {
+  @if $entity == mt {@include margin-leader($value);}
+  @if $entity == mb {@include margin-trailer($value);}
+  @if $entity == pt {@include padding-leader($value);}
+  @if $entity == pb {@include padding-trailer($value);}
+}
+
+/// Replace `$search` with `$replace` in `$string`
+/// @author Hugo Giraudel
+/// @param {String} $string - Initial string
+/// @param {String} $search - Substring to replace
+/// @param {String} $replace ('') - New value
+/// @return {String} - Updated string
+@function str-replace($string, $search, $replace: '') {
+  $index: str_index($string, $search);
+
+  @if $index {
+    @return str_slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+
+@mixin vertical-rhythm-helpers($lines: 3, $parts: (0, 0.25, 0.5, 0.75)) {
+  @if (variable_exists('grid-breakpoints')) {
+    @each $bpName, $px in $grid-breakpoints {
+      $bp: if($bpName == xs, '', '#{$bpName}-');
+
+      @if (mixin_exists('media-breakpoint-up')) {
+        @include media-breakpoint-up($bpName) {
+          $entities: (mt, mb, pt, pb);
+          @each $entity in $entities {
+            .#{$entity} { /**/
+              @for $i from 0 through $lines {
+                @each $part in $parts {
+                  $value: #{str-replace(#{$i + $part}, '.', '\\.')};
+
+                  //@if ($part != 0 and $i == 0) {
+                  //  $value: '#{$value}';
+                  //}
+
+                  &-#{$bp}#{$value} { @include __($entity, $i + $part); }
+                }
+              }
+            }
+          }
+        }
+      } @else {
+        @warn 'Mixin "media-breakpoint-up" not found';
+      }
+    }
+  } @else {
+    @warn 'Variable "$grid-breakpoints" not found';
+  }
+}
+
+//noinspection CssOverwrittenProperties
+@mixin font($font-size, $line-height: null) {
+  @if ($line-height == null) {
+    font-size: if($rhythm-rem-with-px-fallback, $font-size, null);
+    font-size: convert-length($font-size, rem);
+  } @else {
+    @if (type_of($line-height) == 'number') {
+      $unit: unit($line-height);
+      @if ($unit == '') {
+        @include adjust-font-size-to($font-size, $line-height);
+      } @else {
+        font-size: if($rhythm-rem-with-px-fallback, $font-size, null);
+        font-size: convert-length($font-size, rem);
+      }
+      @if ($unit == 'px') {
+        line-height: if($rhythm-rem-with-px-fallback, $line-height, null);
+        line-height: (convert-length($line-height, em, $font-size) / 1em);
+      }
+      @if ($unit == 'em') {
+        line-height: if($rhythm-rem-with-px-fallback, convert-length($line-height, px, $font-size), null);
+        line-height: $line-height;
+      }
+      @if ($unit == 'rem') {
+        line-height: if($rhythm-rem-with-px-fallback, convert-length($line-height, px, $font-size), null);
+        line-height: $line-height;
+      }
+    } @else {
+      @warn 'Invalid type of $line-height param: #{type_of($line-height)}. Number expected.';
+    }
+  }
+}
