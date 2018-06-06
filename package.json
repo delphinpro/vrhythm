@@ -1,0 +1,19 @@
+{
+  "name": "vrhythm",
+  "version": "2.0.0",
+  "description": "Vertical rhythm library",
+  "main": "source/_vrhythm.scss",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delphinpro/vrhythm.git"
+  },
+  "author": "delphinpro <delphinpro@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/delphinpro/vrhythm/issues"
+  },
+  "homepage": "https://github.com/delphinpro/vrhythm#readme"
+}
