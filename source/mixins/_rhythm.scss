@@ -296,7 +296,9 @@ $_rhythm-relative-font-sizing: if($rhythm-unit == px, false, true);
             .#{$entity} { /**/
               @for $i from 0 through $lines {
                 @each $part in $parts {
-                  $value: #{str-replace(#{$i + $part}, '.', '\\.')};
+                  $_p: #{str-replace(#{$part}, '.', '\\.')};
+                  $value: #{$i}#{$_p};
+                  @if $part == 0 { $value: #{$i}; }
 
                   //@if ($part != 0 and $i == 0) {
                   //  $value: '#{$value}';

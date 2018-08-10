@@ -1,6 +1,6 @@
 {
   "name": "vrhythm",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Vertical rhythm library",
   "main": "source/_vrhythm.scss",
   "scripts": {
