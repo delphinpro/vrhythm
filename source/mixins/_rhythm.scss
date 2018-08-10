@@ -296,15 +296,16 @@ $_rhythm-relative-font-sizing: if($rhythm-unit == px, false, true);
             .#{$entity} { /**/
               @for $i from 0 through $lines {
                 @each $part in $parts {
-                  $_p: #{str-replace(#{$part}, '.', '\\.')};
-                  $value: #{$i}#{$_p};
-                  @if $part == 0 { $value: #{$i}; }
+                  $value: $i + $part;
+                  $class: str-replace(#{$value}, '.', '\\.');
+                  @if $value < 1 {
+                    @if str_length($class) > 1 and str-slice($class, 1, 1) == '\\' {
+                      $class: str-replace(#{0$class}, ' ', '');
+                    }
+                  }
+                  //@debug $value, str_length($class), str-slice($class, 1, 1), $i, #{'>>> '$class};
 
-                  //@if ($part != 0 and $i == 0) {
-                  //  $value: '#{$value}';
-                  //}
-
-                  &-#{$bp}#{$value} { @include __($entity, $i + $part); }
+                  &-#{$bp}#{$class} { @include __($entity, $value); }
                 }
               }
             }
